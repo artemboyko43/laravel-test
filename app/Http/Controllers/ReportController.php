@@ -11,7 +11,7 @@ class ReportController extends Controller
 {
     /**
      * Get user revenue report with completed orders only
-     * 
+     *
      * Features:
      * - Filters only completed orders
      * - Supports optional date range filtering
@@ -37,7 +37,7 @@ class ReportController extends Controller
                     if ($startDate && $endDate) {
                         $query->whereBetween('created_at', [$startDate, $endDate]);
                     }
-                }
+                },
             ])
             ->withSum([
                 'orders as total_revenue' => function ($query) use ($startDate, $endDate) {
@@ -45,7 +45,7 @@ class ReportController extends Controller
                     if ($startDate && $endDate) {
                         $query->whereBetween('created_at', [$startDate, $endDate]);
                     }
-                }
+                },
             ], 'total_amount')
             ->orderBy('id');
 

@@ -41,9 +41,9 @@ class UserRevenueReportTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [
-                    '*' => ['user_id', 'email', 'orders_count', 'total_revenue']
+                    '*' => ['user_id', 'email', 'orders_count', 'total_revenue'],
                 ],
-                'meta' => ['current_page', 'per_page', 'total', 'last_page']
+                'meta' => ['current_page', 'per_page', 'total', 'last_page'],
             ]);
 
         $response->assertJson([
@@ -53,8 +53,8 @@ class UserRevenueReportTest extends TestCase
                     'email' => $user->email,
                     'orders_count' => 1,
                     'total_revenue' => 100.50,
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -99,8 +99,8 @@ class UserRevenueReportTest extends TestCase
                         'user_id' => $user->id,
                         'orders_count' => 1,
                         'total_revenue' => 100.00,
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 
@@ -131,7 +131,7 @@ class UserRevenueReportTest extends TestCase
                     'per_page' => 10,
                     'total' => 25,
                     'last_page' => 3,
-                ]
+                ],
             ])
             ->assertJsonCount(10, 'data');
     }
@@ -185,8 +185,8 @@ class UserRevenueReportTest extends TestCase
                 'data' => [
                     [
                         'user_id' => $userWithCompleted->id,
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 
@@ -227,8 +227,8 @@ class UserRevenueReportTest extends TestCase
                         'user_id' => $user->id,
                         'orders_count' => 2,
                         'total_revenue' => 300.50,
-                    ]
-                ]
+                    ],
+                ],
             ]);
     }
 }

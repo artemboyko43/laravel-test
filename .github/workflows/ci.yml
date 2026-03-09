@@ -10,16 +10,6 @@ jobs:
   tests:
     name: PHP Tests
     runs-on: ubuntu-latest
-    
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: testing
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
@@ -28,8 +18,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
-          extensions: mbstring, xml, mysql, pdo, pdo_mysql
+          php-version: '8.4'
+          extensions: mbstring, xml, mysql, pdo, pdo_mysql, sqlite, pdo_sqlite
           coverage: none
 
       - name: Copy .env
@@ -44,21 +34,10 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 775 storage bootstrap/cache
 
-      - name: Create Database
-        run: |
-          mysql -h 127.0.0.1 -u root -ppassword -e "CREATE DATABASE IF NOT EXISTS testing;"
-
-      - name: Run Migrations
-        run: php artisan migrate --env=testing --force
-
       - name: Run Tests
         env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: testing
-          DB_USERNAME: root
-          DB_PASSWORD: password
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
         run: vendor/bin/phpunit --testdox
 
   lint:
@@ -72,7 +51,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.4'
           extensions: mbstring, xml
 
       - name: Install Dependencies
@@ -83,3 +62,6 @@ jobs:
           find app -type f -name "*.php" -exec php -l {} \;
           find routes -type f -name "*.php" -exec php -l {} \;
           find database -type f -name "*.php" -exec php -l {} \;
+
+      - name: Run Laravel Pint
+        run: vendor/bin/pint --test
