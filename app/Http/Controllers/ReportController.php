@@ -25,6 +25,12 @@ class ReportController extends Controller
         $perPage = min(max($request->integer('per_page', 15), 1), 100);
 
         $query = User::query()
+            ->whereHas('orders', function ($query) use ($startDate, $endDate) {
+                $query->where('status', 'completed');
+                if ($startDate && $endDate) {
+                    $query->whereBetween('created_at', [$startDate, $endDate]);
+                }
+            })
             ->withCount([
                 'orders' => function ($query) use ($startDate, $endDate) {
                     $query->where('status', 'completed');
@@ -41,7 +47,6 @@ class ReportController extends Controller
                     }
                 }
             ], 'total_amount')
-            ->having('orders_count', '>', 0)
             ->orderBy('id');
 
         $users = $query->paginate($perPage);
