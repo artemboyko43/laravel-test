@@ -28,3 +28,8 @@ yarn-error.log
 !/storage/framework/sessions/.gitignore
 /storage/framework/views/*
 !/storage/framework/views/.gitignore
+
+# Docker
+docker-compose.override.yml
+*.log
+.docker/
