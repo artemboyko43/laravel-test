@@ -22,9 +22,6 @@ class OrderItem extends Model
         ];
     }
 
-    /**
-     * Get the order that owns the item
-     */
     public function order()
     {
         return $this->belongsTo(Order::class);

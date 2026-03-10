@@ -22,17 +22,11 @@ class Order extends Model
         ];
     }
 
-    /**
-     * Get the user that owns the order
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get all items for the order
-     */
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
