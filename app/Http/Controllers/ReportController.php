@@ -9,15 +9,6 @@ use Illuminate\Http\JsonResponse;
 
 class ReportController extends Controller
 {
-    /**
-     * Get user revenue report with completed orders only
-     *
-     * Features:
-     * - Filters only completed orders
-     * - Supports optional date range filtering
-     * - Prevents N+1 queries using withCount and withSum
-     * - Includes pagination
-     */
     public function userRevenue(UserRevenueReportRequest $request): JsonResponse
     {
         $startDate = $request->validated('start_date');
